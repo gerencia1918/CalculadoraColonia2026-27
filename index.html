@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Calculá el valor de la Colonia de Verano 2026-27 con los descuentos aplicados.">
+<title>Calculadora de Colonia 2026-27 · Club Independiente de Tandil</title>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Diseño: columna única de lectura, tarjetas por hermano y resumen lateral fijo en pantallas anchas.
+   Color: rojo de camiseta sobre blanco frío con tinte rojizo. Tipo: Barlow Condensed para títulos, Barlow para el resto. */
+:root{
+  --bg:#F7F4F4; --surface:#FFFFFF; --ink:#1B1416; --muted:#665A5D; --line:#E2D9DB;
+  --accent:#C8102E; --accent-ink:#FFFFFF; --accent-soft:#FBE8EB; --accent-text:#A50D26;
+  --ok:#1F7A4D; --ok-soft:#E4F3EB; --warn:#8A5A00; --warn-soft:#FFF1D6;
+  --display:'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#150F11; --surface:#21191B; --ink:#F4EEEF; --muted:#B5A8AB; --line:#3A2E31;
+  --accent:#D91C3A; --accent-ink:#FFFFFF; --accent-soft:#3A1720; --accent-text:#FF7A8E;
+  --ok:#6FD3A0; --ok-soft:#173226; --warn:#F2C46B; --warn-soft:#382C10; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#150F11; --surface:#21191B; --ink:#F4EEEF; --muted:#B5A8AB; --line:#3A2E31;
+  --accent:#D91C3A; --accent-ink:#FFFFFF; --accent-soft:#3A1720; --accent-text:#FF7A8E;
+  --ok:#6FD3A0; --ok-soft:#173226; --warn:#F2C46B; --warn-soft:#382C10; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 96px}
+.wrap{max-width:1040px;margin:0 auto}
+header.top{padding-block:24px 8px}
+.club{font:600 13px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--accent-text)}
+h1{font:700 clamp(34px,7vw,56px)/.95 var(--display);margin:10px 0 8px;text-wrap:balance;letter-spacing:.005em}
+.lede{color:var(--muted);max-width:56ch;margin:0}
+
+.banner{display:flex;gap:10px;align-items:flex-start;border-radius:10px;padding:12px 14px;margin:18px 0 0;font-size:15px}
+.banner.ok{background:var(--ok-soft);color:var(--ok)}
+.banner.off{background:var(--warn-soft);color:var(--warn)}
+.banner b{font-weight:600}
+
+.gate{margin:24px 0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;max-width:520px}
+.gate h2{font:700 28px/1 var(--display);margin:0 0 6px}
+.gate p{color:var(--muted);margin:0 0 16px}
+label.fld{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+input[type=email]{width:100%;font:inherit;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+input[type=email]:focus-visible{outline:3px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.check{display:flex;gap:10px;align-items:flex-start;margin:14px 0;font-size:14px;color:var(--muted)}
+.check input{margin-top:3px;width:18px;height:18px;accent-color:var(--accent)}
+.err{color:var(--accent-text);font-size:14px;min-height:20px;margin:6px 0 0}
+.btn{font:600 16px var(--body);background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:13px 20px;cursor:pointer;min-height:46px}
+.btn:hover{filter:brightness(1.08)}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.btn.ghost{background:transparent;color:var(--accent-text);border:1.5px solid var(--accent);}
+.btn.small{padding:8px 12px;min-height:36px;font-size:14px}
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;margin-top:20px;align-items:start}
+@media (min-width:900px){.layout{grid-template-columns:minmax(0,1fr) 360px}.aside{position:sticky;top:16px}.minibar{display:none!important}body{padding-block:0 40px}}
+
+.kid{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
+.kid-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.kid-head h3{font:700 26px/1 var(--display);margin:0}
+.kid-head h3 small{font:500 14px var(--body);color:var(--muted);margin-left:6px}
+.row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px}
+.row>div{min-width:0}
+.cap{font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.seg{display:inline-flex;flex-wrap:wrap;gap:6px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{border:1.5px solid var(--line);border-radius:9px;padding:9px 13px;cursor:pointer;font-weight:500;background:var(--bg);min-height:42px;display:inline-flex;align-items:center}
+.seg input:checked+label{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.seg input:focus-visible+label{outline:3px solid var(--ink);outline-offset:2px}
+.seg input[value="NO"]:checked+label{background:var(--line);border-color:var(--line);color:var(--muted)}
+.cont{border-top:1px solid var(--line);padding-top:14px;margin-top:2px}
+.cont .name{font:700 22px/1 var(--display);margin:0 0 8px;display:flex;gap:8px;align-items:baseline}
+.cont .name small{font:500 13px var(--body);color:var(--muted)}
+.je{margin-top:8px}
+.je .seg label{padding:7px 11px;min-height:36px;font-size:14px}
+.addrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:4px 0 14px}
+.pay{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+
+.result{background:var(--surface);border:1.5px solid var(--accent);border-radius:14px;padding:18px}
+.result h2{font:700 26px/1 var(--display);margin:0 0 12px}
+.r-kid{padding:12px 0;border-top:1px solid var(--line)}
+.r-kid:first-of-type{border-top:0;padding-top:0}
+.r-kid .t{display:flex;justify-content:space-between;gap:10px;font-weight:600}
+.r-kid .t span:last-child{font-variant-numeric:tabular-nums}
+.r-line{display:flex;justify-content:space-between;gap:10px;font-size:15px;color:var(--muted);margin-top:4px}
+.r-line span:last-child{font-variant-numeric:tabular-nums;color:var(--ink)}
+.badge{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;background:var(--accent-soft);color:var(--accent-text);border-radius:999px;padding:4px 10px}
+.sum{border-top:2px solid var(--ink);margin-top:12px;padding-top:12px}
+.sum .l{display:flex;justify-content:space-between;gap:10px;font-size:15px;color:var(--muted);margin-bottom:4px;font-variant-numeric:tabular-nums}
+.sum .final{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 10px;margin-top:8px}
+.sum .final b{font:700 20px var(--display);text-transform:uppercase;letter-spacing:.04em}
+.sum .final strong{white-space:nowrap;font:700 38px/1 var(--display);color:var(--accent-text);font-variant-numeric:tabular-nums}
+.empty{color:var(--muted);font-size:15px}
+.note{font-size:13px;color:var(--muted);margin:14px 0 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+.r-line span:last-child,.sum .l span:last-child,.r-kid .t span:last-child{white-space:nowrap}
+.ant{margin:14px 0 0;color:var(--ink);font-weight:500;background:var(--accent-soft);border-radius:10px;padding:10px 12px}
+.ant input:disabled+span{color:var(--muted)}
+.promos{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.promos h3{font:700 22px/1 var(--display);margin:0 0 8px}
+.promos ul{margin:0;padding-left:18px;display:grid;gap:8px;font-size:15px}
+.sug{margin-top:14px;border:1.5px dashed var(--accent);background:var(--accent-soft);border-radius:12px;padding:14px}
+.sug p{margin:0 0 10px;font-size:15px}
+.sug .check{margin:0 0 6px;color:var(--ink);font-weight:500}
+.sug .note{margin:0}
+.badge.add{background:var(--ok-soft);color:var(--ok);margin-left:6px}
+.minibar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1.5px solid var(--accent);
+  padding:10px max(16px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  display:flex;justify-content:space-between;align-items:center;gap:12px;z-index:5}
+.minibar small{display:block;color:var(--muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.minibar strong{font:700 28px/1 var(--display);color:var(--accent-text);font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="club">Club Independiente de Tandil</div>
+    <h1>Calculá el valor de la Colonia 2026-27</h1>
+    <p class="lede">Elegí los contingentes de cada niño o niña y mirá cuánto sería, con los descuentos ya aplicados.</p>
+    <div id="banner"></div>
+  </header>
+
+  <section class="gate" id="gate">
+    <h2>Antes de empezar</h2>
+    <p>Dejanos tu mail para usar la calculadora. Administración puede usarlo para comunicarse con vos por la Colonia.</p>
+    <form id="gateForm" novalidate>
+      <label class="fld" for="email">Tu mail</label>
+      <input type="email" id="email" autocomplete="email" inputmode="email" placeholder="nombre@ejemplo.com" required>
+      <label class="check" for="consent"><input type="checkbox" id="consent"><span>Acepto que el club use mi mail para ese fin.</span></label>
+      <p class="err" id="gateErr" role="alert"></p>
+      <button class="btn" type="submit">Empezar a calcular</button>
+    </form>
+  </section>
+
+  <main class="layout" id="app" hidden>
+    <div>
+      <p class="note" style="margin:0 0 12px">Las bonificaciones por hermano se aplican de mayor a menor valor: el niño/a de mayor valor es el 1.º y no tiene bonificación por hermano. El orden de carga no cambia el resultado.</p>
+      <div id="kids"></div>
+      <div class="addrow">
+        <button class="btn ghost" type="button" id="addKid">+ Agregar hermana/o</button>
+        <span class="note" style="margin:0" id="maxNote"></span>
+      </div>
+      <div class="pay">
+        <div class="cap">Forma de pago</div>
+        <div class="seg">
+          <input type="radio" name="pago" id="pago-ef" value="no" checked><label for="pago-ef">Un solo pago</label>
+          <input type="radio" name="pago" id="pago-tj" value="si"><label for="pago-tj">Tarjeta en 3 cuotas</label>
+        </div>
+        <p class="note" id="tjNote"></p>
+      </div>
+    </div>
+
+    <aside class="aside" id="resumen">
+      <div class="result">
+        <h2>Tu resumen</h2>
+        <div id="result"></div>
+        <p class="note">Los valores son orientativos y deben ser chequeados al momento de la inscripción.</p>
+        <div class="actions"><button class="btn small ghost" type="button" id="copy">Copiar resumen</button><span class="note" id="copied" style="margin:0;align-self:center"></span></div>
+      </div>
+      <div class="promos">
+        <h3>Promociones de los bancos</h3>
+        <p class="note" style="margin:0 0 10px">Las ofrecen los bancos, no el club. No están descontadas del resumen y conviene consultar sus condiciones.</p>
+        <ul>
+          <li><b>Banco Galicia · Eminent</b> (tarjetas de crédito y débito): 25% de reintegro que realiza el banco, con tope de $ 50.000 por mes. Hasta el 30/12.</li>
+          <li><b>Banco Provincia · Visa</b>: 3 o 6 cuotas sin interés. Hasta el 30/12.</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<div class="minibar" id="minibar" hidden>
+  <div><small>Total estimado</small><strong id="miniTotal">$ 0</strong></div>
+  <a class="btn small" href="#resumen" id="miniGo" style="text-decoration:none;display:inline-flex;align-items:center">Ver detalle</a>
+</div>
+
+<script>
+// URL de la aplicación web de Apps Script (ver LEEME). Vacío = no se registra ni se envía nada.
+var ENDPOINT = '';
+var usuarioMail = '', consultaId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2);
+function enviar(obj){ if(!ENDPOINT) return Promise.resolve(false); try{ return fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(obj)}).then(function(){return true;},function(){return false;}); }catch(x){ return Promise.resolve(false); } }
+// ============ CÁLCULO (misma lógica que la planilla de Administración) ============
+// CORE-START
+var PRECIOS = {
+  'SOCIO':    {c1m:160000, c2q:126000, c2m:210000, c3q:96000,  c3m:160000},
+  'NO SOCIO': {c1m:218000, c2q:174000, c2m:290000, c3q:130800, c3m:218000}
+};
+var JE = {
+  'SOCIO':    {'Mañana':{c2q:63600,c2m:106000,c3q:45000,c3m:75000}, 'Tarde':{c2q:48000,c2m:80000,c3q:31200,c3m:52000}},
+  'NO SOCIO': {'Mañana':{c2q:87000,c2m:145000,c3q:67200,c3m:112000}, 'Tarde':{c2q:54000,c2m:90000,c3q:43200,c3m:72000}}
+};
+var CFG = {
+  anticipadoPct: 0.10, anticipadoHasta: '2026-11-28',
+  hermano: [0, 0.20, 0.40, 0.80],
+  cont1Uno: 0.20, cont1Tres: 0.30,
+  recargoTarjeta: 0.10
+};
+function precioCont(kid, n){
+  var opt = kid['c'+n];
+  if (n === 1 && kid.try1 && (!opt || opt === 'NO')) opt = 'Mes completo';
+  if (!opt || opt === 'NO') return 0;
+  var key = 'c'+n + (opt === 'Quincena' ? 'q' : 'm');
+  var p = PRECIOS[kid.socio][key] || 0;
+  if (n > 1 && kid['je'+n]) p += (JE[kid.socio][kid.turno][key] || 0);
+  return p;
+}
+function calcular(kids, hoyISO, tarjeta, usarAnticipado){
+  var vigente = hoyISO <= CFG.anticipadoHasta;
+  var aplicaAnt = vigente && usarAnticipado !== false;
+  var rows = [], lista = 0, desc = 0, subtotal = 0;
+  // El niño/a de mayor valor cuenta como 1.º (sin bonificación por hermano); el resto, de mayor a menor valor.
+  var totales = kids.map(function(kd){ return precioCont(kd,1) + precioCont(kd,2) + precioCont(kd,3); });
+  var orden = totales.map(function(t, idx){ return idx; }).sort(function(a, b){ return (totales[b] - totales[a]) || (a - b); });
+  var rango = []; orden.forEach(function(idx, pos){ rango[idx] = pos; });
+  kids.forEach(function(kid, e){
+    var i = rango[e];
+    var p = [precioCont(kid,1), precioCont(kid,2), precioCont(kid,3)];
+    var M = p[0] + p[1] + p[2];
+    var va = [p[0]>0, p[1]>0, p[2]>0];
+    var N = (i === 0 && aplicaAnt) ? M * CFG.anticipadoPct : 0;
+    var O = M * CFG.hermano[Math.min(i,3)];
+    // El descuento sobre el 1.er contingente solo cuenta 2.º y 3.er contingente completos (con o sin jornada extendida).
+    var full2 = kid.c2 === 'Mes completo', full3 = kid.c3 === 'Mes completo';
+    var P = p[0] * ((va[0]&&full2&&full3) ? CFG.cont1Tres : ((va[0]&&(full2||full3)) ? CFG.cont1Uno : 0));
+    var Q = Math.max(N, O, P);
+    var criterio = '';
+    if (M > 0 && Q > 0){
+      if (Q === O) criterio = 'Descuento por hermano ' + Math.round(CFG.hermano[Math.min(i,3)]*100) + '%';
+      else if (Q === N) criterio = 'Pago anticipado ' + Math.round(CFG.anticipadoPct*100) + '%';
+      else criterio = 'Descuento 1.er contingente ' + Math.round((full2&&full3 ? CFG.cont1Tres : CFG.cont1Uno)*100) + '%';
+    }
+    var soloCont = Q > 0 && Q !== O && Q !== N;
+    var nets = [0,0,0];
+    if (M > 0){
+      nets[0] = p[0] - (soloCont ? Q : Q * p[0] / M);
+      nets[1] = p[1] - (soloCont ? 0 : Q * p[1] / M);
+      nets[2] = p[2] - (soloCont ? 0 : Q * p[2] / M);
+    }
+    nets = nets.map(function(x){ return Math.round(x); });
+    var total = nets[0] + nets[1] + nets[2];
+    rows.push({ list:p, nets:nets, total:total, listTotal:M, descuento:M-total, criterio:criterio, rank:i+1, adicional1:!!(kid.try1 && kid.c1 === 'NO' && p[0] > 0) });
+    lista += M; subtotal += total;
+  });
+  var recargo = tarjeta ? Math.round(subtotal * CFG.recargoTarjeta) : 0;
+  return { rows:rows, lista:lista, descuento:lista-subtotal, subtotal:subtotal, recargo:recargo, final:subtotal+recargo, vigente:vigente, aplicaAnt:aplicaAnt };
+}
+// CORE-END
+
+// ============ PANTALLA ============
+var MESES = [ {n:1, nombre:'Diciembre', opts:['NO','Mes completo'], je:false},
+              {n:2, nombre:'Enero',     opts:['NO','Quincena','Mes completo'], je:true},
+              {n:3, nombre:'Febrero',   opts:['NO','Quincena','Mes completo'], je:true} ];
+var ORD = ['Niño/a 1','Niño/a 2','Niño/a 3','Niño/a 4'];
+var RANKTXT = ['1.er','2.º','3.er','4.º'];
+var usarAnt = true;
+var kids = [ nuevo() ];
+function nuevo(){ return {socio:'SOCIO', turno:'Mañana', c1:'Mes completo', c2:'NO', c3:'NO', je2:false, je3:false}; }
+function $(id){ return document.getElementById(id); }
+function money(n){ return '$ ' + Math.round(n).toLocaleString('es-AR'); }
+function hoyAR(){
+  try { return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Argentina/Buenos_Aires'}).format(new Date()); }
+  catch(e){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+}
+function labelOpt(o){ return o === 'NO' ? 'No va' : o; }
+
+function renderBanner(){
+  var vig = hoyAR() <= CFG.anticipadoHasta;
+  $('banner').innerHTML = vig
+    ? '<div class="banner ok"><span><b>Pago anticipado vigente.</b> Pagando hasta el 28/11 inclusive, el niño/a de mayor valor tiene 10% de descuento.</span></div>'
+    : '<div class="banner off"><span><b>Pago anticipado finalizado.</b> El descuento rigió hasta el 28/11 inclusive.</span></div>';
+}
+
+function renderKids(){
+  var html = kids.map(function(k, i){
+    var h = '<section class="kid" data-i="'+i+'"><div class="kid-head"><h3>'+ORD[i]+'</h3>'+
+      (i>0 ? '<button type="button" class="btn small ghost" data-act="del" data-i="'+i+'">Quitar</button>' : '')+'</div>';
+    h += '<div class="row"><div><div class="cap">Es socio</div>'+seg('i'+i+'socio','socio',['SOCIO','NO SOCIO'],k.socio,function(o){return o==='SOCIO'?'Socio':'No socio';})+'</div>'+
+         '<div><div class="cap">Turno</div>'+seg('i'+i+'turno','turno',['Mañana','Tarde'],k.turno,function(o){return o;})+'</div></div>';
+    MESES.forEach(function(m){
+      h += '<div class="cont"><div class="name">'+m.nombre+(m.je?'':' <small>sin jornada extendida</small>')+'</div>'+
+           seg('i'+i+'c'+m.n,'c'+m.n,m.opts,k['c'+m.n],labelOpt);
+      if (m.je){
+        h += '<div class="je" id="je'+i+'-'+m.n+'" '+(k['c'+m.n]==='NO'?'hidden':'')+'><div class="cap" style="margin-top:6px">Jornada extendida</div>'+
+             seg('i'+i+'je'+m.n,'je'+m.n,['no','si'],k['je'+m.n]?'si':'no',function(o){return o==='si'?'Con jornada extendida':'Sin jornada extendida';})+'</div>';
+      }
+      h += '</div>';
+    });
+    return h + '<div class="sug" id="sug'+i+'" hidden></div></section>';
+  }).join('');
+  $('kids').innerHTML = html;
+  updateSugs();
+  $('addKid').hidden = kids.length >= 4;
+  $('maxNote').textContent = kids.length >= 4 ? 'Máximo de 4 niños/as en la calculadora.' : '';
+}
+function ordCont(n){ return n === 2 ? '2.º contingente (Enero' : '3.er contingente (Febrero'; }
+function sugTexto(k){
+  var partes = [];
+  [2,3].forEach(function(n){ if (k['c'+n] === 'Mes completo') partes.push(ordCont(n) + ' · Mes completo' + (k['je'+n] ? ' + J. extendida' : '') + ')'); });
+  var pct = Math.round((partes.length === 2 ? CFG.cont1Tres : CFG.cont1Uno) * 100);
+  return 'Por concurrir al ' + partes.join(' y al ') + ' tenés un <b>' + pct + '% OFF en el 1er contingente</b>. ¿Querés probarlo?';
+}
+function updateSugs(){
+  kids.forEach(function(k, i){
+    var box = $('sug'+i); if (!box) return;
+    var aplica = k.c1 === 'NO' && (k.c2 === 'Mes completo' || k.c3 === 'Mes completo');
+    if (!aplica){ k.try1 = false; box.hidden = true; box.innerHTML = ''; return; }
+    box.hidden = false;
+    box.innerHTML = '<p>' + sugTexto(k) + '</p>' +
+      '<label class="check" for="try1-'+i+'"><input type="checkbox" id="try1-'+i+'" data-act="try1"' + (k.try1 ? ' checked' : '') + '><span>Sumar el 1er contingente (Diciembre · Mes completo) y ver el cálculo</span></label>' +
+      '<p class="note">Los descuentos no se suman: se aplica el más conveniente para cada niño/a.</p>';
+  });
+}
+function seg(name, field, opts, current, label){
+  return '<div class="seg" role="radiogroup">' + opts.map(function(o, j){
+    var id = name+'-'+j;
+    return '<input type="radio" name="'+name+'" id="'+id+'" value="'+o+'" data-field="'+field+'"'+(o===current?' checked':'')+'><label for="'+id+'">'+label(o)+'</label>';
+  }).join('') + '</div>';
+}
+
+function renderResult(){
+  var tj = document.querySelector('input[name=pago]:checked').value === 'si';
+  var r = calcular(kids, hoyAR(), tj, usarAnt);
+  var out = '';
+  r.rows.forEach(function(row, i){
+    var k = kids[i];
+    out += '<div class="r-kid"><div class="t"><span>'+ORD[i]+' <span style="font-weight:500;color:var(--muted)">· '+(k.socio==='SOCIO'?'Socio':'No socio')+'</span></span><span>'+money(row.total)+'</span></div>';
+    if (row.listTotal === 0){ out += '<div class="empty">Elegí al menos un contingente.</div>'; }
+    else if (kids.length > 1){ out += '<div class="r-line"><span>Cuenta como '+RANKTXT[row.rank-1]+' niño/a'+(row.rank===1 ? ' (mayor valor)' : '')+'</span><span></span></div>'; }
+    MESES.forEach(function(m){
+      var opt = k['c'+m.n];
+      if (m.n === 1 && row.adicional1) opt = 'Mes completo';
+      if (opt === 'NO') return;
+      var extra = (m.n>1 && k['je'+m.n]) ? ' + J. extendida' : '';
+      out += '<div class="r-line"><span>'+m.nombre+' · '+opt+extra+((m.n===1 && row.adicional1) ? ' <span class="badge add" style="margin:0">Adicional</span>' : '')+'</span><span>'+money(row.nets[m.n-1])+'</span></div>';
+    });
+    if (row.criterio) out += '<span class="badge">'+row.criterio+'</span>';
+    out += '</div>';
+  });
+  out += '<label class="check ant" for="antchk"><input type="checkbox" id="antchk"'+(r.aplicaAnt ? ' checked' : '')+(r.vigente ? '' : ' disabled')+'><span>Pago anticipado: '+Math.round(CFG.anticipadoPct*100)+'% OFF para el niño/a de mayor valor'+(r.vigente ? '' : '. No disponible: rigió hasta el 28/11 inclusive')+'</span></label>';
+  out += '<div class="sum">'+
+    '<div class="l"><span>Total de lista</span><span>'+money(r.lista)+'</span></div>'+
+    '<div class="l"><span>Descuentos</span><span>− '+money(r.descuento)+'</span></div>'+
+    (tj ? '<div class="l"><span>Recargo por pago en 3 cuotas ('+Math.round(CFG.recargoTarjeta*100)+'%)</span><span>+ '+money(r.recargo)+'</span></div>' : '')+
+    '<div class="final"><b>Total a pagar</b><strong>'+money(r.final)+'</strong></div></div>';
+  $('result').innerHTML = out;
+  $('miniTotal').textContent = money(r.final);
+  $('tjNote').textContent = tj ? 'Pagando con tarjeta en 3 cuotas hay un recargo del '+Math.round(CFG.recargoTarjeta*100)+'%. En un solo pago no hay recargo.' : '';
+  window.__ultimo = r;
+}
+
+function resumenTexto(){
+  var r = window.__ultimo, t = 'Colonia de Verano 2026-27 · Club Independiente de Tandil\n';
+  r.rows.forEach(function(row,i){
+    var k = kids[i]; t += '\n'+ORD[i]+' ('+(k.socio==='SOCIO'?'Socio':'No socio')+', '+k.turno+'): '+money(row.total)+'\n';
+    MESES.forEach(function(m){ var o=k['c'+m.n]; if(m.n===1&&row.adicional1)o='Mes completo (adicional)'; if(o==='NO')return; t += '  - '+m.nombre+' '+o+((m.n>1&&k['je'+m.n])?' + J. extendida':'')+': '+money(row.nets[m.n-1])+'\n'; });
+    if(row.criterio) t += '  ('+row.criterio+')\n';
+  });
+  t += '\nTotal a pagar: '+money(r.final)+(r.recargo?' (incluye recargo de tarjeta)':'')+'\nLos valores son orientativos y deben ser chequeados al momento de la inscripción.';
+  return t;
+}
+
+function copiar(t){
+  var done = function(){ $('copied').textContent = 'Copiado'; setTimeout(function(){ $('copied').textContent=''; }, 2000); };
+  var fb = function(){ try{ var a=document.createElement('textarea'); a.value=t; a.style.position='fixed'; a.style.opacity='0'; document.body.appendChild(a); a.select(); var ok=document.execCommand('copy'); document.body.removeChild(a); ok?done():($('copied').textContent='No se pudo copiar'); }catch(x){ $('copied').textContent='No se pudo copiar'; } };
+  if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done, fb); } else { fb(); }
+}
+// eventos
+$('kids').addEventListener('change', function(e){
+  var el = e.target;
+  if (el.dataset.act === 'try1'){ kids[+el.closest('.kid').dataset.i].try1 = el.checked; renderResult(); return; }
+  if (!el.dataset.field) return;
+  var i = +el.closest('.kid').dataset.i, f = el.dataset.field, v = el.value;
+  if (f === 'je2' || f === 'je3') kids[i][f] = (v === 'si');
+  else kids[i][f] = v;
+  if (f === 'c2' || f === 'c3'){
+    var n = f.slice(1), box = $('je'+i+'-'+n);
+    if (v === 'NO'){ kids[i]['je'+n] = false; if (box){ box.hidden = true; var no = box.querySelector('input[value="no"]'); if (no) no.checked = true; } }
+    else if (box){ box.hidden = false; }
+  }
+  updateSugs();
+  renderResult();
+});
+$('kids').addEventListener('click', function(e){
+  var b = e.target.closest('[data-act=del]'); if (!b) return;
+  kids.splice(+b.dataset.i, 1); renderKids(); renderResult();
+});
+$('result').addEventListener('change', function(e){
+  if (e.target.id !== 'antchk') return;
+  usarAnt = e.target.checked; renderResult();
+  var c = $('antchk'); if (c) c.focus();
+});
+$('addKid').addEventListener('click', function(){ if (kids.length < 4){ kids.push(nuevo()); renderKids(); renderResult(); } });
+document.querySelectorAll('input[name=pago]').forEach(function(r){ r.addEventListener('change', renderResult); });
+$('copy').addEventListener('click', function(){ var t = resumenTexto(); copiar(t); enviar({tipo:'copia', id:consultaId, email:usuarioMail, total:window.__ultimo.final, detalle:t}); });
+$('gateForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var mail = $('email').value.trim(), ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail);
+  if (!ok){ $('gateErr').textContent = 'Escribí un mail válido, por ejemplo nombre@ejemplo.com.'; $('email').focus(); return; }
+  if (!$('consent').checked){ $('gateErr').textContent = 'Para continuar, tildá la aceptación.'; return; }
+  $('gateErr').textContent = '';
+  usuarioMail = mail; enviar({tipo:'ingreso', id:consultaId, email:mail});
+  $('gate').hidden = true; $('app').hidden = false; $('minibar').hidden = false;
+  renderKids(); renderResult();
+});
+renderBanner();
+</script>
+</body>
+</html>
